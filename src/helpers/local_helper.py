@@ -12,4 +12,4 @@ class LocalHelper:
         :param path: Specify the path to save the dataframe
         :return: A dataframe
         """
-        df.coalesce(1).write.option("header",True).mode("overwrite").csv(r'{}'.format(path))
+        df.coalesce(1).write.option("header",True).mode("overwrite").json(r'{}'.format(path))
