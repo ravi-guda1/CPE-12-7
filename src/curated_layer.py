@@ -1,20 +1,22 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path.cwd().parent))
-
 from helpers.spark_helper import SparkHelper
 from helpers.snowflake_helper import SnowflakeHelper
 from helpers.local_helper import LocalHelper
 from helpers.hive_helper import HiveHelper
-
+from pyspark.sql.functions import count
 import pyspark.sql.functions as F
-
 import env
 from pyspark.sql.window import Window
 
 def load_csv():
     spark = SparkHelper.get_spark_session()
     curated_df = spark.read.csv(env.cleansed_layer_df_path, header=True).coalesce(1)
+    curated_df.printSchema()
+    curated_df.select("OrderNumber").distinct().count()
+
+
     '''
     curated_df = curated_df.withColumn('DiscountAmount', F.when(F.col('DiscountAmount') == 0, "N").otherwise("Y")) \
                 .withColumn("salesprice-freight-taxes-promotion", F.col("SalesAmount") - ( F.col("TaxAmount") + F.col("Freight") )) \

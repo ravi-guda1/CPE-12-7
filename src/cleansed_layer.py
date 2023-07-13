@@ -7,12 +7,18 @@ from helpers.snowflake_helper import SnowflakeHelper
 from helpers.local_helper import LocalHelper
 from helpers.hive_helper import HiveHelper
 import env
-
+from pyspark.sql.functions import to_date
 import pyspark.sql.functions as F
+from pyspark.sql.functions import col,column
 
 def load_csv():
     spark = SparkHelper.get_spark_session()
     cleansed_df = spark.read.csv(r"outputs\raw_layer.csv", header=True).coalesce(1)
+    cleansed_df.dropDuplicates()
+    cleansed_df.printSchema()
+    #cleansed_df.withColumn("CustomerKey",col("CustomerKey").cast("Integer")).show()
+    #cleansed_df = cleansed_df.withColumn("StockDate", to_date(col("StockDate"), "dd/MM/yyyy"))
+    cleansed_df.printSchema()
     return cleansed_df
 
 def to_local(df):
