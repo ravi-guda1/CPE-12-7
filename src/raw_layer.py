@@ -13,7 +13,7 @@ def load_json():
     spark=SparkHelper.get_spark_session()
     df1 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksSales2017-210509-235702.json")
-    #df1.printSchema()
+    df1.printSchema()
     # sales=df1.show()
     df2 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksSales2016-210509-235702.json")
@@ -25,11 +25,11 @@ def load_json():
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksReturns-210509-235702.json")
     df6 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksProductSubcategories-210509-235702.json")
-    df7 = spark.read.option("multiline", "true").json(
+    raw_df = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksProducts-210509-235702.json")
-    #df7.printSchema()
+    raw_df.printSchema()
     # products=df7.show()
-    # products.printSchema()
+    #products.printSchema()
     df8 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksProductCategories-210509-235702.json")
     df9 = spark.read.option("multiline", "true").json(
@@ -39,7 +39,7 @@ def load_json():
     df10 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksCalendar-210509-235702.json")
 
-    raw_df = df1.join(df7, df7.ProductKey == df1.ProductKey)
+
     # raw_df = raw_df.na.drop()
     return raw_df
 

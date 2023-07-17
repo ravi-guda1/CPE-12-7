@@ -10,11 +10,20 @@ import pyspark.sql.functions as F
 import env
 from pyspark.sql.window import Window
 
+from pyspark.sql.functions import avg
+from pyspark.sql.functions import avg, to_date
+from pyspark.sql.functions import avg, to_date, year, month
+from pyspark.sql.functions import sum, to_date, year, month
+from pyspark.sql.functions import sum, month, year
+from pyspark.sql.functions import desc
+from pyspark.sql.functions import count, to_date
+from pyspark.sql.functions import asc
+
 def load_csv():
     spark = SparkHelper.get_spark_session()
     curated_df = spark.read.csv(env.cleansed_layer_df_path, header=True).coalesce(1)
     curated_df.printSchema()
-    curated_df.select("OrderNumber").distinct().count()
+    #curated_df.select("OrderNumber").distinct().count()
 
 
     '''
@@ -66,16 +75,17 @@ if __name__ == "__main__":
     df = load_csv()
     to_local(df)
     to_hive(df, env.curated_layer_hive_table)
+
     #to_snowflake(df)
-'''
-    df = load_agg_region_csv()
+
+    #df = load_agg_region_csv()
     region_to_local(df)
     to_hive(df, env.agg_region_hive_table)
-    region_to_snowflake(df)
+    #region_to_snowflake(df)
 
-    df = load_agg_category_csv()
+    #df = load_agg_category_csv()
     category_to_local(df)
     to_hive(df, env.agg_category_hive_table)
     #category_to_snowflake(df)
     
-    '''
+

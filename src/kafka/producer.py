@@ -17,7 +17,7 @@ import json
 
 # Kafka configuration
 kafka_bootstrap_servers = "localhost:9092"
-kafka_topic = "TEST_DATA"
+kafka_topic = "cities"
 
 # CSV file path
 csv_file_path = "C:\\Users\\ravikumar.g\\Downloads\\salesdataset\\AdventureWorksCustomers-210509-235702.csv"

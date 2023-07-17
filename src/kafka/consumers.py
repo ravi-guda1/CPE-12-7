@@ -28,7 +28,7 @@ from pyspark.sql import SparkSession
 
 # Kafka configuration
 kafka_bootstrap_servers = "localhost:9092"
-kafka_topic = "TEST_DATA"
+kafka_topic = "cities"
 
 # HDFS configuration
 hdfs_output_path = "hdfs://localhost:9000/output"
