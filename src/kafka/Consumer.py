@@ -1,3 +1,30 @@
+
+
+
+consumer = KafkaConsumer(
+    'sales',
+     bootstrap_servers=['192.168.56.1:9092'], #add your IP here
+    value_deserializer=lambda x: loads(x.decode('utf-8')))
+
+
+# In[6]:
+
+
+spark = SparkSession.builder.appName("Kafka to HDFS").getOrCreate()
+
+
+# In[18]:
+
+
+from pyspark.sql.types import StructType, StringType,StructField
+from pyspark.sql.types import DoubleType, StringType, IntegerType, BooleanType
+
+
+for c in consumer:
+    print(c.value)
+
+
+
 from pyspark.sql import SparkSession
 
 # Create a SparkSession
@@ -28,5 +55,10 @@ query = df.writeStream \
     .option("path", "hdfs://localhost:9000/user") \
     .start()
 
-# Wait for the query to terminate
 query.awaitTermination()
+
+
+
+
+
+

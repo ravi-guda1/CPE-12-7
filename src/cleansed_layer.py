@@ -47,8 +47,11 @@ def load_csv():
     cleansed_df = spark.read.csv(r"outputs\raw_layer.csv", header=True).coalesce(1)
     cleansed_df.dropDuplicates()
 
+
+
     #null_values = cleansed_df.isnull().sum()
     #null_values.show()
+    # df.createOrReplaceTempView("my_temp_table")
     #order_count = cleansed_df.select('ProductKey').distinct().count()
 
     cleansed_df.printSchema()

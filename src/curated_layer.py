@@ -18,13 +18,29 @@ from pyspark.sql.functions import sum, month, year
 from pyspark.sql.functions import desc
 from pyspark.sql.functions import count, to_date
 from pyspark.sql.functions import asc
+from pyspark.sql.functions import max
 
 def load_csv():
     spark = SparkHelper.get_spark_session()
     curated_df = spark.read.csv(env.cleansed_layer_df_path, header=True).coalesce(1)
     curated_df.printSchema()
-    #curated_df.select("OrderNumber").distinct().count()
-
+    #curated_df.select("ProductKey").distinct().count()
+    curated_df.createOrReplaceTempView("sales")
+    spark.sql("select * from sales")
+    count= spark.sql("SELECT COUNT(*) AS order_count FROM sales").show()
+    #averageRevenueDF = spark.sql("SELECT AVG(ProductCost) AS average_revenue FROM sales")
+    #averageRevenueDF.show()
+    #revenuePerMonthPerYearDF = spark.sql(
+    #    "SELECT year(date) AS year, month(date) AS month, SUM(ProductCost) AS total_revenue FROM sales GROUP BY year, month").show()
+    #revenuePerMonthPerYearDF = spark.sql(
+     #   """SELECT year(date) AS year,month(date) AS month,sum(ProductPrice) AS total_revenue FROM sales GROUP BY year,month ORDER BY year,month """).show()
+    #highestPricedProductDF = spark.sql(
+      #  """ SELECT * FROM sales WHERE ProductPrice = (SELECT MAX(ProductPrice) FROM sales) """)
+    #highestPricedProductDF.show()
+    #orderCountByDateDF = spark.sql(
+      #  """ SELECT OrderDate ,COUNT(*) AS order_count FROM sales GROUP BY OrderDate ORDER BY OrderDate """).show()
+    #sortedProductsByCategoryDF = spark.sql("""SELECT * FROM sales ORDER BY ProductSubcategoryKey ASC """)
+    #sortedProductsByCategoryDF.show()
 
     '''
     curated_df = curated_df.withColumn('DiscountAmount', F.when(F.col('DiscountAmount') == 0, "N").otherwise("Y")) \

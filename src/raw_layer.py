@@ -11,6 +11,7 @@ import json
 
 def load_json():
     spark=SparkHelper.get_spark_session()
+    '''
     df1 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksSales2017-210509-235702.json")
     df1.printSchema()
@@ -38,7 +39,14 @@ def load_json():
     # customers=df9.show()
     df10 = spark.read.option("multiline", "true").json(
         r"E:\CPE-12-7-23\src\inputs\AdventureWorksCalendar-210509-235702.json")
+'''
+    sales = spark.read.option("multiline", "true").json(
+        r"E:\CPE-12-7-23\src\inputs\AdventureWorksSales2017-210509-235702.json")
 
+    product = spark.read.option("multiline", "true").json(
+        r"E:\CPE-12-7-23\src\inputs\AdventureWorksProducts-210509-235702.json")
+    raw_df = product.join(sales, product.ProductKey == sales.ProductKey)
+    raw_df.printSchema()
 
     # raw_df = raw_df.na.drop()
     return raw_df
